@@ -1,32 +1,18 @@
-<!--
-  Copy this into each project repo as README.md.
-  The single most important thing for a control-systems portfolio:
-  SHOW RESULTS. A plot of your step response, tracking error, or a GIF
-  of the real system moving is worth more than paragraphs of description.
-  Replace every [bracketed] item and delete these comments.
--->
+# Inverted Pendulum Control
 
-# [Project Name]
+> State-feedback controllers that balance a pendulum on a cart in an upright position, simulated in Python. 
 
-> One sentence on what this controls and why it's interesting.
-> e.g. "State-feedback controller that balances an inverted pendulum on a cart, deployed on an STM32."
-
-![demo](docs/demo.gif)
-<!-- A GIF of the real hardware or the simulation animation goes here.
-     If you have no video, use your best results plot instead. -->
+![demo](cart_pole_control.gif)
 
 ---
 
 ## Overview
 
-**The problem:** [What system are you controlling? What's the control objective —
-setpoint tracking, disturbance rejection, stabilization?]
+**The problem:** An inverted pendulum mounted on a motor-driven cart that slides along a horizontal rail. The upright positon is an open-loop unstable equilibrium, and the system is underactuated with the cart motor controling both cart position and the pole angle. The objective of this project is reaching stabilization with the pole upright, while keeping the cart close to its starting positon and recover from disturbances. 
 
-**The approach:** [Which method and why — e.g. "LQR because the system is
-well-modeled and I wanted optimal state feedback with a clear tuning knob (Q, R)."]
+**The approach:** The essence of the controllers is the LQR (Linear-quadratic regulator). I derived the equations of motion using lagrangian mechanics and sympy, linearized them about the upright position, and used the state-feedback law **u = -Kx** that minimizes a quadratic cost on state error and control effort. I chose LQR because the gain is optimized and outperforms hand-tuning. The Q and R weighting matrices give clear control over the characteristics of the controller, allowing me to set which variables are more important and affect settling times and overshoots.
 
-**The outcome:** [One line — e.g. "Settles in 0.8 s with <2% overshoot and
-rejects a 5 N impulse disturbance."]
+**The outcome:** ________
 
 ---
 
