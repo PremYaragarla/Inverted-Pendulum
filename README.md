@@ -26,7 +26,7 @@ Both controllers have a 100% success rate when tested against 50 starting angles
 | LQR + Heuristic |  5.76 s  |  6.07 m  |  3.46 m  |
 
 ![Settling Time Response](figures/single_pendulum_LQR_settle.png)
-![Total Track Required](figures/single_pendulum_LQR.png)
+![Total Track Required](figures/single_pendulum_LQR_track.png)
 
 The plots of track length and settling time against initial angle show these results in detail. The plots of the heuristic swing-up controller are much more jagged than the energy-based controller, which may be explained by the fact that the applied force is discontinuous and results in huge force jumps over small angle changes. 
 
