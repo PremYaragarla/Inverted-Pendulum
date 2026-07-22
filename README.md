@@ -2,7 +2,7 @@
 
 > State-feedback controllers that balance a pendulum on a cart in an upright position, simulated in Python. 
 
-![demo](cart_pole_control.gif)
+![Single Pendulum Demo with LQR and Heuristic Swing-up](figures/single_pendulum_LQR.mp4)
 
 ---
 
@@ -18,19 +18,18 @@
 
 ## Results
 
-*This is the section reviewers actually read. Lead with evidence.*
+Both controllers have a 100% success rate when tested against 50 starting angles between 5 and 180 degrees from vertically downward. The settling time for the energy-based swing-up controller had a median settling time 0.14 seconds higher than my heuristic swing-up controller and had worst-case track length 4.41 m longer. The median track length of my heuristic controller was also 1.8 m shorter. 
 
-| Metric | Target | Achieved |
-|---|---|---|
-| Settling time (2%) | < 1.0 s | 0.82 s |
-| Overshoot | < 5% | 2.1% |
-| Steady-state error | 0 | ~0 |
-| Phase margin | > 45° | 58° |
+| Controller | Median Settling Time | Max Track |  Median Track  |
+|---|---|---|---|
+| LQR + Energy-based |  5.90 s  |  10.48 m  |  5.26 m  |
+| LQR + Heuristic |  5.76 s  |  6.07 m  |  3.46 m  |
 
-![Step response](docs/step_response.png)
-![Tracking / disturbance rejection](docs/tracking.png)
+![Settling Time Response](figures/single_pendulum_LQR_settle.png)
+![Total Track Required](figures/single_pendulum_LQR.png)
 
-[A sentence interpreting the plots — what to notice and why it's good.]
+The plots of track length and settling time against initial angle show these results in detail. The plots of the heuristic swing-up controller are much more jagged than the energy-based controller, which may be explained by the fact that the applied force is discontinuous and results in huge force jumps over small angle changes. 
+
 
 ---
 
@@ -45,7 +44,7 @@
 ## Tech Stack
 
 - **Language:** Python (Jupyter Notebooks)
-- **Modeling:** SymPy (Lagrangian mechanics, symbolic linearization
+- **Modeling:** SymPy (Lagrangian mechanics, symbolic linearization)
 - **Control and Numerics:** NumPy, SciPy, python-control
 - **Visualization:** Matplotlib (Plots and animations; FFmpeg for GIF/MP4 export)
 
@@ -55,8 +54,8 @@
 
 ```
 .
-├── notebooks/            # plots, GIFs, design notes, report PDF
-├── figures/           # MATLAB/Simulink or Python model & controller design
+├── notebooks/            # Simulation and controller notebooks
+├── figures/           # Plots and animations showing simulated response
 ├── requirements.txt
 └── README.md
 ```
@@ -65,20 +64,21 @@
 
 ## How to Run
 
-**Simulation**
 ```bash
-[e.g. python sim/run.py   —or—   open model/design.slx and press Run]
+git clone https://github.com/PremYaragarla/Inverted-Pendulum.git
+cd Inverted_Pendulum
+pip install -r requirements.txt
+jupyter lab         # Or Jupyter Notebook
 ```
 
 
+**Requirements:** [numpy, scipy, sympy, matplotlib, control, jupyter, or `pip install -r requirements.txt`, plus any hardware]
 
-**Requirements:** [MATLAB + Control System Toolbox, or `pip install -r requirements.txt`, plus any hardware]
+**FFMPEG** must also be installed to export the GIF/MP4 animations, all other cells run without it. Only the animation cells will return errors. 
 
 ---
 
 ## What I'd Improve Next
 
-- [e.g. add integral action to remove residual offset under load]
-- [e.g. replace hand-tuned filter with a proper Kalman filter]
-
-
+- **Finish the inverted double pendulum.** The lagrangian and LQR pipeline are complete, but tuning and ensuring stability of the sytem will take more time. While the controller works for a small range of initial conditions, it is far from complete and more research needs to be done to find the ideal control methods. In the future, swing-up controllers can also be created for the double pendulum to increase the range of stable initial conditions. 
+- **Test Robustness.** Add sensor noise, measurement delays, and slight model-mismatch to see how far the LQR will hold up. This would be accompanied by moving towards a fixed sample rate as a step toward running the controller in a live simulation. Furthermore, the controllers can be brought to real hardware with real-time integration. 
